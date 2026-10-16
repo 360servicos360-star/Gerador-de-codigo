@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Consular VFS - Painel de Gestão e Preparação</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --success: #16a34a;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text: #334155;
+            --text-light: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-wrapper {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0 0 8px 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .body-content {
+            padding: 30px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .pane {
+            display: none;
+        }
+
+        .pane.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            background: #fff;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            margin-top: 10px;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1eb857;
+        }
+
+        .admin-result {
+            margin-top: 20px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .code-box {
+            font-family: monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #166534;
+            background: white;
+            padding: 12px;
+            border: 2px dashed #4ade80;
+            text-align: center;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        .session-info {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checklist-box {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin-top: 15px;
+            background: white;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .check-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-item input {
+            width: 20px;
+            height: 20px;
+            margin-right: 14px;
+            accent-color: var(--accent);
+        }
+
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-bg {
+            background: #f1f5f9;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            background: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .footer {
+            padding: 25px 30px;
+            background: #f8fafc;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .developer-tag {
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .developer-tag a {
+            color: #25d366;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="main-card">
+        <div class="header">
+            <h1>PORTAL DE APOIO CONSULAR</h1>
+            <p>Sistema Profissional de Preparação e Verificação de Documentação</p>
+        </div>
+
+        <div class="body-content">
+            <!-- Navegação Superior -->
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="mudarPainel('cliente')">Área do Cliente</button>
+                <button class="tab-btn" onclick="mudarPainel('admin')">Gerador de Códigos (Admin)</button>
+            </div>
+
+            <!-- PAINEL CLIENTE -->
+            <div id="pane-cliente" class="pane active">
+                <div id="login-section">
+                    <p style="color: var(--text-light); margin-bottom: 20px;">Insira o código de acesso exclusivo fornecido após a confirmação do serviço para desbloquear o seu painel de preparação.</p>
+                    <div class="form-group">
+                        <label for="inputCodigo">Código de Acesso:</label>
+                        <input type="text" id="inputCodigo" placeholder="Ex: VFS-MARIA-30D-4821">
+                    </div>
+                    <button class="btn-primary" onclick="validarAcessoCliente()">Aceder à Plataforma</button>
+                </div>
+
+                <div id="app-section" style="display: none;">
+                    <div class="session-info">
+                        <div>
+                            <strong>Cliente:</strong> <span id="lblNomeCliente">---</span><br>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Validade restante: <strong id="lblDiasRestantes">--</strong> dias</span>
+                        </div>
+                        <button onclick="terminarSessao()" style="background: none; border: none; color: #ef4444; font-weight: 600; cursor: pointer;">Sair</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectPais">País de Destino:</label>
+                        <select id="selectPais" onchange="carregarChecklist()">
+                            <option value="portugal">Portugal (Procura de Trabalho / Estudo)</option>
+                            <option value="espanha">Espanha / França (Schengen - Turismo)</option>
+                        </select>
+                    </div>
+
+                    <div class="progress-container">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+                            <span>Progresso da Documentação</span>
+                            <span id="txtPercentual">0%</span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-fill" id="barProgresso"></div>
+                        </div>
+                    </div>
+
+                    <label>Checklist de Requisitos:</label>
+                    <div class="checklist-box" id="boxChecklist"></div>
+
+                    <a href="https://visa.vfsglobal.com/ago/pt/prt/book-an-appointment" target="_blank" class="btn-primary" style="display: block; text-align: center; text-decoration: none; margin-top: 25px; background: var(--primary);">
+                        Ir para o Portal Oficial VFS Global
+                    </a>
+                </div>
+            </div>
+
+            <!-- GERADOR DE CÓDIGOS (ADMIN) -->
+            <div id="pane-admin" class="pane">
+                <p style="color: var(--text-light); margin-bottom: 20px;">Gere e emita códigos de acesso para clientes que efetuaram o pagamento.</p>
+                
+                <div class="form-group">
+                    <label for="adminNomeCliente">Nome Completo do Cliente:</label>
+                    <input type="text" id="adminNomeCliente" placeholder="Ex: António Manuel">
+                </div>
+
+                <div class="form-group">
+                    <label for="adminValidade">Tempo de Validade do Acesso:</label>
+                    <select id="adminValidade">
+                        <option value="7">7 Dias</option>
+                        <option value="15">15 Dias</option>
+                        <option value="30" selected>30 Dias (Padrão 10.000 Kz)</option>
+                        <option value="60">60 Dias</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary" onclick="gerarCodigoAdmin()">⚡ Gerar Novo Código de Acesso</button>
+
+                <div class="admin-result" id="adminResultado">
+                    <strong>Código Gerado com Sucesso!</strong>
+                    <div class="code-box" id="txtCodigoGerado"></div>
+                    
+                    <button class="btn-primary btn-whatsapp" onclick="copiarMensagemWhatsApp()">
+                        📋 Copiar Mensagem para Enviar ao Cliente
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>Portal independente de auxílio logístico e processual.</div>
+            <div class="developer-tag">
+                Desenvolvido por Lando João | 
+                <a href="https://wa.me/244943804370" target="_blank">WhatsApp: 943 804 370</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const documentosPorPais = {
+        portugal: [
+            "Passaporte válido (mínimo de 3 meses além da estadia)",
+            "Formulário oficial VFS preenchido e assinado",
+            "2 Fotografias tipo passe recentes",
+            "Seguro médico de viagem com cobertura internacional",
+            "Certificado de registo criminal apostilado",
+            "Comprovativo de meios de subsistência",
+            "Comprovativo de alojamento garantido"
+        ],
+        espanha: [
+            "Passaporte válido (emitido nos últimos 10 anos)",
+            "Reserva de voo de ida e volta confirmada",
+            "Reserva de hotel ou carta de convite oficial",
+            "Extratos bancários dos últimos 3 meses",
+            "Seguro de viagem Schengen (mínimo 30.000€)",
+            "Declaração de emprego / Carta patronal"
+        ]
+    };
+
+    let ultimoCodigoGerado = '';
+    let ultimoNomeCliente = '';
+    let ultimosDiasValidade = 30;
+
+    function mudarPainel(painel) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+
+        if (painel === 'cliente') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('pane-cliente').classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('pane-admin').classList.add('active');
+        }
+    }
+
+    function gerarCodigoAdmin() {
+        const nome = document.getElementById('adminNomeCliente').value.trim();
+        const dias = document.getElementById('adminValidade').value;
+
+        if (!nome) {
+            alert('Por favor, insira o nome do cliente.');
+            return;
+        }
+
+        const primeiroNome = nome.split(' ')[0].toUpperCase();
+        const aleatorio = Math.floor(1000 + Math.random() * 9000);
+        const codigoFinal = `VFS-${primeiroNome}-${dias}D-${aleatorio}`;
+
+        const dadosSubscricao = {
+            nome: nome,
+            dias: parseInt(dias),
+            criadoEm: new Date().getTime()
+        };
+
+        // Guarda localmente
+        localStorage.setItem(codigoFinal, JSON.stringify(dadosSubscricao));
+
+        ultimoCodigoGerado = codigoFinal;
+        ultimoNomeCliente = nome;
+        ultimosDiasValidade = dias;
+
+        document.getElementById('txtCodigoGerado').textContent = codigoFinal;
+        document.getElementById('adminResultado').style.display = 'block';
+    }
+
+    function copiarMensagemWhatsApp() {
+        const textoMsg = `Olá *${ultimoNomeCliente}*!\n\nSeu pagamento de 10.000 Kz foi confirmado com sucesso. Aqui está o seu código de acesso exclusivo para a plataforma de apoio VFS:\n\n🔑 *Código de Acesso:* \`${ultimoCodigoGerado}\`\n⏳ *Validade:* ${ultimosDiasValidade} dias\n\nAceda ao portal e insira o seu código para desbloquear a sua preparação.`;
+
+        navigator.clipboard.writeText(textoMsg).then(() => {
+            alert('Mensagem copiada! Agora basta colar na conversa do WhatsApp do cliente.');
+        });
+    }
+
+    function validarAcessoCliente() {
+        const codigo = document.getElementById('inputCodigo').value.trim();
+        const dadosStr = localStorage.getItem(codigo);
+
+        if (!dadosStr) {
+            alert('Código de acesso inválido ou inexistente.');
+            return;
+        }
+
+        const dados = JSON.parse(dadosStr);
+        const agora = new Date().getTime();
+        const diasPassados = (agora - dados.criadoEm) / (1000 * 60 * 60 * 24);
+        const diasRestantes = Math.ceil(dados.dias - diasPassados);
+
+        if (diasRestantes <= 0) {
+            alert('Este código de acesso expirou.');
+            localStorage.removeItem(codigo);
+            return;
+        }
+
+        document.getElementById('lblNomeCliente').textContent = dados.nome;
+        document.getElementById('lblDiasRestantes').textContent = diasRestantes;
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('app-section').style.display = 'block';
+
+        carregarChecklist();
+    }
+
+    function terminarSessao() {
+        document.getElementById('login-section').style.display = 'block';
+        document.getElementById('app-section').style.display = 'none';
+        document.getElementById('inputCodigo').value = '';
+    }
+
+    function carregarChecklist() {
+        const pais = document.getElementById('selectPais').value;
+        const container = document.getElementById('boxChecklist');
+        container.innerHTML = '';
+
+        const lista = documentosPorPais[pais] || [];
+
+        lista.forEach(doc => {
+            const label = document.createElement('label');
+            label.className = 'check-item';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.onchange = calcularProgresso;
+
+            const span = document.createElement('span');
+            span.textContent = doc;
+
+            label.appendChild(checkbox);
+            label.appendChild(span);
+            container.appendChild(label);
+        });
+
+        calcularProgresso();
+    }
+
+    function calcularProgresso() {
+        const total = document.querySelectorAll('#boxChecklist input[type="checkbox"]').length;
+        const marcados = document.querySelectorAll('#boxChecklist input[type="checkbox"]:checked').length;
+        const percent = total > 0 ? Math.round((marcados / total) * 100) : 0;
+
+        document.getElementById('barProgresso').style.width = percent + '%';
+        document.getElementById('txtPercentual').textContent = percent + '%';
+    }
+</script>
+
+</body>
+</html>
